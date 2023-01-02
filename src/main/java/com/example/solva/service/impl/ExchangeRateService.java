@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Instant;
+import java.util.UUID;
 
 @EnableScheduling
 @Slf4j
@@ -27,13 +28,13 @@ public class ExchangeRateService implements IExchangeRateService {
 
     @Value("${constant.twelvedata.api-key}")
     private String key;
-    private static final String currency = "USD/KZT";
+    private static final String CURRENCY = "USD/";
     private final ExchangeRateDao exchangeRateDao;
     private final RestTemplate restTemplate;
 
     // Exchange sum from KZT to USD currency
-    public BigDecimal exchangeSum(BigDecimal sum) {
-        ExchangeRate currentRate = exchangeRateDao.findFirstByOrderByReceivedTime();
+    public BigDecimal exchangeSum(BigDecimal sum, String currency) {
+        ExchangeRate currentRate = exchangeRateDao.findTopByCurrency(CURRENCY+currency);
 
         if (currentRate != null){
             return sum.divide(currentRate.getRateValue(),2, RoundingMode.HALF_UP);
@@ -43,16 +44,23 @@ public class ExchangeRateService implements IExchangeRateService {
         }
     }
 
-    // Save ExchangeRate Entity in Database every 24 hours at 11:00 Washington.
-    // For testing - every 30 sec - @Scheduled(fixedRate = 30000)
-    @Scheduled(cron = "0 0 23 * * MON-FRI", zone = "GMT-5:00")
+    // Save ExchangeRate in Cassandra Database every 24 hours at 11:00 Washington.
+    // For testing - every 30 sec - @Scheduled(fixedRate = 10000)
+     @Scheduled(cron = "0 0 23 * * MON-FRI", zone = "GMT-5:00")
     public void createExchangeRate() {
-        Instant time = Instant.now();
 
         ExchangeRate exchangeRate = new ExchangeRate();
-        exchangeRate.setRateValue(requestExchangeRate(currency));
-        exchangeRate.setReceivedTime(time);
 
+        exchangeRate.setCurrency("USD/RUB");
+        exchangeRate.setId(UUID.randomUUID());
+        exchangeRate.setRateValue(requestExchangeRate("USD/RUB"));
+        exchangeRate.setReceivedTime(Instant.now());
+        exchangeRateDao.save(exchangeRate);
+
+        exchangeRate.setCurrency("USD/KZT");
+        exchangeRate.setId(UUID.randomUUID());
+        exchangeRate.setRateValue(requestExchangeRate("USD/KZT"));
+        exchangeRate.setReceivedTime(Instant.now());
         exchangeRateDao.save(exchangeRate);
     }
 

@@ -1,10 +1,12 @@
 package com.example.solva.repository;
 
 import com.example.solva.entity.ExchangeRate;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 
-@Repository
-public interface ExchangeRateDao extends JpaRepository<ExchangeRate, Long> {
-    ExchangeRate findFirstByOrderByReceivedTime();
+import java.util.UUID;
+
+public interface ExchangeRateDao extends CrudRepository<ExchangeRate, UUID> {
+    @Query(value = "SELECT * FROM exchange_rate_status where currency = :currency LIMIT 1", nativeQuery = true)
+    ExchangeRate findTopByCurrency(String currency);
 }
