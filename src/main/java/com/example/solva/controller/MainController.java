@@ -5,6 +5,7 @@ import com.example.solva.dto.TransactionItemDto;
 import com.example.solva.dto.TransactionRequestDto;
 import com.example.solva.entity.Limit;
 import com.example.solva.service.impl.LimitService;
+import com.example.solva.service.impl.TransactionHelper;
 import com.example.solva.service.impl.TransactionService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 public class MainController {
 
     private final TransactionService transactionService;
+    private final TransactionHelper transactionHelper;
     private final LimitService limitService;
 
     @ApiOperation("Сохранить транзакцию")
@@ -27,10 +29,10 @@ public class MainController {
         transactionService.saveTransaction(transactionRequestDto);
     }
 
-    @ApiOperation("Установить новый лимит")
-    @PutMapping("/limit")
-    public void updateLimit(@RequestBody LimitRequestDto limitRequestDto) {
-        limitService.updateLimit(limitRequestDto);
+    @ApiOperation("Сохранить список транзакций")
+    @PostMapping("/transactions")
+    public void saveTransactionList(@RequestBody List<TransactionRequestDto> transactionRequestDtoList) {
+        transactionHelper.saveTransactionList(transactionRequestDtoList);
     }
 
     @ApiOperation("Список транзакций, превысивших лимит")
