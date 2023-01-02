@@ -1,5 +1,6 @@
 package com.example.solva.impl;
 
+import com.example.solva.service.impl.ExchangeRateService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ class ExchangeRateServiceTest {
     @Autowired
     private ExchangeRateService exchangeRateService;
 
-    @Sql(value = {"/create-exchangeRate-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/create-exchangeRate-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(value = {"/scripts/create-exchangeRate-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/scripts/create-exchangeRate-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Test
     void exchangeSum() {
         BigDecimal bigDecActual = exchangeRateService.exchangeSum(new BigDecimal(460));

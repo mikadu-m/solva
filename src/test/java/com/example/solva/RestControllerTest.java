@@ -65,8 +65,8 @@ public class RestControllerTest {
     }
 
     @Test
-    @Sql(value = {"/create-transaction-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/create-transaction-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(value = {"/scripts/create-transaction-before.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/scripts/create-transaction-after.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getTransaction() throws Exception {
         mockMvc.perform(get("http://localhost:8080/api/v1/solva/transactions/322").contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())

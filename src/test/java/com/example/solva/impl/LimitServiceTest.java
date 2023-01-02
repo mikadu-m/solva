@@ -1,15 +1,19 @@
 package com.example.solva.impl;
 
-import com.example.solvatest.dto.TransactionRequestDto;
-import com.example.solvatest.entity.Limit;
+import com.example.solva.dto.TransactionRequestDto;
+import com.example.solva.entity.Limit;
+import com.example.solva.service.impl.LimitService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @TestPropertySource("classpath:/application-test.properties")
