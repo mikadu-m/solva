@@ -3,6 +3,7 @@ package com.example.solva.controller;
 import com.example.solva.dto.LimitRequestDto;
 import com.example.solva.dto.TransactionItemDto;
 import com.example.solva.dto.TransactionRequestDto;
+import com.example.solva.entity.Limit;
 import com.example.solva.service.impl.LimitService;
 import com.example.solva.service.impl.TransactionService;
 import io.swagger.annotations.ApiOperation;
@@ -36,5 +37,18 @@ public class MainController {
     @GetMapping("/transactions/{accountNumber}")
     public ResponseEntity<List<TransactionItemDto>> getTransactions(@PathVariable("accountNumber") long accountNumber) {
         return ResponseEntity.ok().body(transactionService.getTransactions(accountNumber));
+    }
+
+    @ApiOperation("Получить список лимитов")
+    @GetMapping("/limit/{accountNumber}")
+    public List<Limit> getLimit(@PathVariable("accountNumber") long accountNumber) {
+        return limitService.getLimit(accountNumber);
+    }
+
+
+    @ApiOperation("Установить новый лимит")
+    @PutMapping("/limit")
+    public void updateLimit(@RequestBody LimitRequestDto limitRequestDto) {
+        limitService.updateLimit(limitRequestDto);
     }
 }
