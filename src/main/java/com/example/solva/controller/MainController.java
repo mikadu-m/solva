@@ -49,7 +49,7 @@ public class MainController {
 
 
     @ApiOperation("Установить новый лимит")
-    @PutMapping("/limit")
+    @PostMapping("/limit")
     public void updateLimit(@RequestBody LimitRequestDto limitRequestDto) {
         limitService.updateLimit(limitRequestDto);
     }
