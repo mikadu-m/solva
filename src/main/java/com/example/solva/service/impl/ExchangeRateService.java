@@ -32,7 +32,7 @@ public class ExchangeRateService implements IExchangeRateService {
     private final ExchangeRateDao exchangeRateDao;
     private final RestTemplate restTemplate;
 
-    // Exchange sum from KZT to USD currency
+    // Exchange sum from KZT or RUB to USD currency
     public BigDecimal exchangeSum(BigDecimal sum, String currency) {
         ExchangeRate currentRate = exchangeRateDao.findTopByCurrency(CURRENCY+currency);
 

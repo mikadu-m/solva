@@ -24,7 +24,7 @@ public class MainController {
     private final LimitService limitService;
 
     @ApiOperation("Сохранить транзакцию")
-    @PostMapping("/save")
+    @PostMapping("/transaction")
     public void saveTransaction(@RequestBody TransactionRequestDto transactionRequestDto) {
         transactionService.saveTransaction(transactionRequestDto);
     }
@@ -50,7 +50,7 @@ public class MainController {
 
     @ApiOperation("Установить новый лимит")
     @PostMapping("/limit")
-    public void updateLimit(@RequestBody LimitRequestDto limitRequestDto) {
+    public void saveLimit(@RequestBody LimitRequestDto limitRequestDto) {
         limitService.updateLimit(limitRequestDto);
     }
 }
