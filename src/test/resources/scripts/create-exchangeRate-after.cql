@@ -1,0 +1,1 @@
+-- drop table spring_cassandra_test.exchange_rate_status;
