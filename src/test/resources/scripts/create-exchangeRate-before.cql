@@ -1,0 +1,14 @@
+-- drop table exchange_rate_status;
+--
+-- create table exchange_rate_status
+-- (
+--     currency      text,
+--     received_time timestamp,
+--     id            uuid,
+--     rate_value    decimal,
+--     primary key(currency, received_time)
+-- )
+--     with clustering order by (received_time desc);
+--
+-- insert into exchange_rate_status (currency, received_time, id, rate_value)
+-- values('USD/RUB', '2023-01-03 18:09:30.900', 01f88a5a-b8d0-42c8-a4fa-4b23c6e7078f , 71.61);

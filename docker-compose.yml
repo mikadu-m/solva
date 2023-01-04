@@ -1,23 +1,49 @@
-version: '2'
+version: '2.2'
 
 services:
   app:
     image: 'docker-spring-boot-postgres:latest'
     build:
       context: .
+    ports:
+      - "8080:8080"
     container_name: blissful_merkle
     depends_on:
-      - db
+      cassandra:
+        condition: service_healthy
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/solva
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/solva
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=1
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_DATA_CASSANDRA_CONTACT-POINTS=cassandra
 
-  db:
+  postgres:
     image: 'postgres:14.6-alpine'
-    container_name: db
+    container_name: postgres
+    restart: always
     environment:
       - POSTGRES_DB=solva
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1
+
+  cassandra:
+    image: 'cassandra:4.0.7'
+    container_name: cassandra
+    ports:
+      - "9042:9042"
+    restart: always
+    healthcheck:
+      test: ["CMD", "cqlsh", "-u cassandra", "-p cassandra" ,"-e describe keyspaces"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+
+  cqlsh:
+    image: 'cassandra:4.0.7'
+    depends_on:
+      cassandra:
+        condition: service_healthy
+    volumes:
+      - ./src/main/resources/schema.cql:/schema.cql
+    command: /bin/bash -c "echo loading cassandra keyspace && cqlsh cassandra -f /schema.cql"

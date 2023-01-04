@@ -41,8 +41,9 @@ public class TransactionService implements ITransactionService {
         transaction.setAccountFrom(transactionRequestDto.getAccountFrom());
         transaction.setLimitId(limit);
         transaction.setAccountTo(transactionRequestDto.getAccountTo());
-        transaction.setCurrencyShortname(transactionRequestDto.getCurrencyShortname());
-        transaction.setSum(exchangeRateService.exchangeSum(transactionRequestDto.getSum()));
+        transaction.setCurrencyShortname("USD");
+        transaction.setSum(exchangeRateService.exchangeSum(transactionRequestDto.getSum(),
+                transactionRequestDto.getCurrencyShortname()));
         transaction.setExpenseCategory(transactionRequestDto.getExpenseCategory());
         transaction.setReceivedTime(Instant.now());
         transaction.setLimitExceeded(limit_status);

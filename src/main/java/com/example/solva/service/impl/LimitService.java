@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -45,6 +46,16 @@ public class LimitService implements ILimitService {
         String limitCurrency = limitRequestDto.getLimitCurrency();
 
         createLimit(accountNumber, limitValue, expenseCategory, limitCurrency);
+    }
+
+    public List<Limit> getLimit(long accountNumber) {
+        Limit limitProduct = limitDao.findMe(accountNumber, "product");
+        Limit limitService = limitDao.findMe(accountNumber, "service");
+
+        List<Limit> limitList= new ArrayList<>(2);
+        limitList.add(limitProduct);
+        limitList.add(limitService);
+        return limitList;
     }
 
     // Check is current limit exceeded by transaction.
