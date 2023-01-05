@@ -62,10 +62,7 @@ class LimitServiceTest {
         limitProdExpected.setReceivedTime(null);
         limitProdExpected.setReceivedTime(null);
         limitListExpected.add(limitProdExpected);
-
-        assertThat(limitListActual).usingRecursiveComparison()
-                .ignoringFields("id","receivedTime")
-                .isEqualTo(limitListExpected);
+        assertThat(limitListActual).isEqualTo(limitListExpected);
     }
 
 
